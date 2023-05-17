@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./contacts-frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./contacts-frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+
+  backend:
+    build: ./contacts-backend
+    ports:
+      - 5000:5000
+    volumes:
+      - ./contacts-backend:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=contacts
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: contacts
+    volumes:
+      - ./contacts-database:/var/lib/mysql
+      - ./contacts-database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
