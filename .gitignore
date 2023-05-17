@@ -1,0 +1,4 @@
+contacts-database/*
+# Except for the docker-entrypoint-initdb.d directory
+!contacts-database/docker-entrypoint-initdb.d/
+!contacts-database/docker-entrypoint-initdb.d/init.sql
